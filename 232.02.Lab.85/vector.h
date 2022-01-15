@@ -254,12 +254,30 @@ vector :: ~vector()
  **************************************/
 void vector :: resize(size_t newElements)
 {
-   numElements = 21;
+     if (0 == capacity())
+    {
+        reserve(capacity() +1);
+    }
+    if (size() == capacity())
+    {
+        reserve(capacity() * 2);
+    }
+    
+   numElements = newElements;
 }
 
 void vector :: resize(size_t newElements, const int & t)
 {
-   numElements = 21;
+    if (0 == capacity())
+    {
+        reserve(capacity() +1);
+    }
+    if (size() == capacity())
+    {
+        reserve(capacity() * 2);
+    }
+    
+   numElements = newElements;
 }
 
 /***************************************
@@ -272,7 +290,16 @@ void vector :: resize(size_t newElements, const int & t)
  **************************************/
 void vector :: reserve(size_t newCapacity)
 {
-   numCapacity = 21;
+    if (0 == capacity())
+    {
+        reserve(capacity() +1);
+    }
+    if (size() == capacity())
+    {
+        reserve(capacity() * 2);
+    }
+    
+   numElements = newElements;
 }
 
 /***************************************

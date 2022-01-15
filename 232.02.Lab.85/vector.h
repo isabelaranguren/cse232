@@ -16,7 +16,7 @@
  *        vector                 : A class that represents a Vector
  *        vector::iterator       : An interator through Vector
  * Author
- *    <your names here>
+ *
  ************************************************************************/
 
 #pragma once
@@ -38,16 +38,16 @@ class vector
 {
 public:
    
-   // 
-   // Construct 
    //
-   vector();
-   vector(size_t numElements);
-   vector(size_t numElements, const int & t);
-   vector(const std::initializer_list<int>& l);
-   vector(const vector &  rhs);
-   vector(      vector && rhs);
-   ~vector();
+   // Construct
+   //
+   vector(); //Default Constructor
+   vector(size_t numElements); // Non-default empty fill
+   vector(size_t numElements, const int & t); // Non-default fill
+   vector(const std::initializer_list<int>& l); //Initializer list constructor
+   vector(const vector &  rhs); // Copy Constructor
+   vector(      vector && rhs); // Move Constructor
+   ~vector(); // Destructor
 
    //
    // Assign
@@ -55,7 +55,18 @@ public:
 
    void swap(vector& rhs)
    {
+       int* tempData = rhs.data;
+       rhs.data = this->data;
+       this->data = tempData;
 
+       size_t tempElem = rhs.numElements;
+       rhs.numElements = this->numElements;
+       this->numElements = tempElem;
+
+       size_t tempCap = rhs.numCapacity;
+       rhs.numCapacity = this->numCapacity;
+       this->numCapacity = tempCap;
+       
    }
    vector & operator = (const vector& rhs);
    vector & operator = (vector && rhs);
@@ -79,7 +90,7 @@ public:
          int& back();
    const int& back() const;
 
-   // 
+   //
    // Insert
    //
 
@@ -95,6 +106,8 @@ public:
 
    void clear()
    {
+       this->numElements = 0;
+       this->data = 0;
    }
    void pop_back()
    {
@@ -105,9 +118,9 @@ public:
    // Status
    //
 
-   size_t  size()     const { return 999;  }
-   size_t  capacity() const { return 999;  }
-   bool empty()       const { return true; }
+   size_t  size()     const { return numElements;  }
+   size_t  capacity() const { return numCapacity;  }
+   bool empty()       const { if (numElements) return false; else return true; }
    
 #ifdef DEBUG // make this visible to the unit tests
 public:
@@ -128,9 +141,9 @@ private:
  ****************************************/
 vector :: vector()
 {
-   data = new int[99];
-   numElements = 17;
-   numCapacity = 19;
+   data = nullptr;
+   numElements = 0;
+   numCapacity = 0;
 }
 
 /*****************************************
@@ -138,22 +151,32 @@ vector :: vector()
  * non-default constructor: set the number of elements,
  * construct each element, and copy the values over
  ****************************************/
-vector :: vector(size_t num, const int & t) 
+vector :: vector(size_t num, const int & t)
 {
-   data = new int[99];
-   numElements = 17;
-   numCapacity = 19;
+   numElements = num;
+   numCapacity = num;
+   data = new int[num];
+   for (size_t i = 0; i < num; i++)
+   {
+       data[i] = t;
+   }
 }
 
 /*****************************************
  * VECTOR :: INITIALIZATION LIST constructors
  * Create a vector with an initialization list.
  ****************************************/
-vector :: vector(const std::initializer_list<int> & l) 
+vector :: vector(const std::initializer_list<int> & l)
 {
-   data = new int[99];
-   numElements = 17;
-   numCapacity = 19;
+    
+   //this->data = new int[l.size()];
+   //this->numElements = l.size();
+   //this->numCapacity = l.size();
+   //for (size_t i = 0; i < l.size(); i++)
+   //{
+   //    this->data[i] = l;
+   //}
+
 }
 
 /*****************************************
@@ -163,9 +186,13 @@ vector :: vector(const std::initializer_list<int> & l)
  ****************************************/
 vector :: vector(size_t num)
 {
-   data = new int[99];
-   numElements = 17;
-   numCapacity = 19;
+   data = new int[num];
+   numElements = num;
+   numCapacity = num;
+   for (size_t i = 0; i < num; i++)
+   {
+       data[i] = 0;
+   }
 }
 
 /*****************************************
@@ -175,9 +202,21 @@ vector :: vector(size_t num)
  ****************************************/
 vector :: vector (const vector & rhs)
 {
-   data = new int[99];
-   numElements = 17;
-   numCapacity = 19;
+    if (!rhs.empty())
+    {
+        this->data = new int[rhs.size()];
+        this->numCapacity = rhs.numElements;
+        this->numElements = rhs.numElements;
+        for (size_t i = 0; i < this->numElements; i++)
+        {
+            this->data[i] = rhs[i];
+        }
+    }
+    else {
+        this->data = nullptr;
+        this->numElements = 0;
+        this->numCapacity = 0;
+    }
 }
 
 /*****************************************
@@ -186,9 +225,14 @@ vector :: vector (const vector & rhs)
  ****************************************/
 vector :: vector (vector && rhs)
 {
-   data = new int[99];
-   numElements = 17;
-   numCapacity = 19;
+    this->data = rhs.data;
+    rhs.data = nullptr;
+
+    this->numElements = rhs.numElements;
+    rhs.numElements = 0;
+
+    this->numCapacity = rhs.numCapacity;
+    rhs.numCapacity = 0;
 }
 
 /*****************************************
@@ -198,7 +242,7 @@ vector :: vector (vector && rhs)
  ****************************************/
 vector :: ~vector()
 {
-   
+    delete[] this->data;
 }
 
 /***************************************
@@ -250,7 +294,7 @@ void vector :: shrink_to_fit()
  ****************************************/
 int & vector :: operator [] (size_t index)
 {
-   return *(new int);
+   return this->data[index];
 }
 
 /******************************************
@@ -259,7 +303,8 @@ int & vector :: operator [] (size_t index)
  *****************************************/
 const int & vector :: operator [] (size_t index) const
 {
-   return *(new int);
+    const int value = this->data[index];
+   return value;
 }
 
 /*****************************************
@@ -268,7 +313,7 @@ const int & vector :: operator [] (size_t index) const
  ****************************************/
 int & vector :: front ()
 {
-   return *(new int);
+   return this->data[0];
 }
 
 /******************************************
@@ -277,7 +322,8 @@ int & vector :: front ()
  *****************************************/
 const int & vector :: front () const
 {
-   return *(new int);
+    const int value = this->data[0];
+   return value;
 }
 
 /*****************************************
@@ -286,7 +332,7 @@ const int & vector :: front () const
  ****************************************/
 int & vector :: back()
 {
-   return *(new int);
+   return this->data[this->size()-1];
 }
 
 /******************************************
@@ -295,7 +341,8 @@ int & vector :: back()
  *****************************************/
 const int & vector :: back() const
 {
-   return *(new int);
+    const int value = this->data[this->size() - 1];
+   return value;
 }
 
 /***************************************
@@ -326,12 +373,70 @@ void vector :: push_back(int && t)
  **************************************/
 vector & vector :: operator = (const vector & rhs)
 {
-   
+    this->clear();
+    if (this->numCapacity < rhs.numCapacity)
+    {
+        this->numCapacity = rhs.numCapacity;
+    }
+    this->numElements = rhs.numElements;
+    this->data = new int[this->numCapacity];
+    for (size_t i = 0; i < this->numElements; i++)
+    {
+        this->data[i] = rhs.data[i];
+    }
+
+    if (rhs.size() == this->size())
+    {
+        for (size_t i = 0; i < this->size(); i++)
+        {
+            this->data[i] = rhs.data[i];
+        }
+    }
+    else if (rhs.size() > this->size())
+    {
+        if (rhs.size() <= this->capacity())
+        {
+            for (size_t i = 0; i < this->size(); i++)
+            {
+                this->data[i] = rhs.data[i];
+            }
+            for (size_t i = this->size(); i < rhs.size(); i++)
+            {
+                // alloc.construct(data[i], rhs.data[i])
+            }
+        }
+        else {
+            int* data = new int[rhs.size()];
+            for (size_t i = 0; i < rhs.size(); i++)
+            {
+                // alloc.construct(dataNew[i], rhs.data[i])
+            }
+            this->clear();
+            // alloc.deallocate(data)
+            this->data = data;
+            this->numCapacity = rhs.size();
+        }
+    }
+    else {
+        for (size_t i = 0; i < rhs.size(); i++)
+        {
+            this->data[i] = rhs.data[i];
+        }
+        for (size_t i = rhs.size(); i < this->size(); i++)
+        {
+            // alloc.destroy(data[i])
+        }
+    }
+    this->numElements = rhs.size();
+
    return *this;
 }
 vector& vector :: operator = (vector&& rhs)
 {
-
+    this->swap(rhs);
+    rhs.data = 0;
+    rhs.numCapacity = 0;
+    rhs.numElements = 0;
    return *this;
 }
 
@@ -351,46 +456,53 @@ class vector :: iterator
 {
 public:
    // constructors, destructors, and assignment operator
-   iterator()       {}
-   iterator(int * p)       {}
-   iterator(const iterator & rhs) {  }
+    iterator() { this->p = NULL; }
+    iterator(int* p) { this->p = p; }
+    iterator(const iterator& rhs) { this->p = rhs.p; }
    iterator & operator = (const iterator & rhs)
    {
+       this->p = rhs.p;
       return *this;
    }
    
    // equals, not equals operator
-   bool operator != (const iterator & rhs) const { return true; }
-   bool operator == (const iterator & rhs) const { return true; }
+   bool operator != (const iterator & rhs) const { if (rhs.p != this->p) return true; else return false; }
+   bool operator == (const iterator & rhs) const { if (rhs.p == this->p) return true; else return false; }
    
    // dereference operator
    int & operator * ()
    {
-      return *(new int);
+      return *(this->p);
    }
    
    // prefix increment
    iterator & operator ++ ()
    {
+       this->p++;
       return *this;
    }
    
    // postfix increment
    iterator operator ++ (int postfix)
    {
-      return *this;
+       iterator temp = *this;
+       ++*this;
+      return temp;
    }
    
    // prefix decrement
    iterator & operator -- ()
    {
+       this->p--;
       return *this;
    }
    
    // postfix decrement
    iterator operator -- (int postfix)
    {
-      return *this;
+       iterator temp = *this;
+       --*this;
+      return temp;
    }
    
 #ifdef DEBUG // make this visible to the unit tests
@@ -411,7 +523,7 @@ private:
  **************************************/
 vector::iterator vector :: begin()
 {
-   return iterator();
+   return iterator(&this->front());
 }
 
 /***************************************
@@ -423,9 +535,10 @@ vector::iterator vector :: begin()
  **************************************/
 vector::iterator vector :: end()
 {
-   return iterator();
+   return iterator(&this->back());
 }
 
 
 
 } // namespace custom
+

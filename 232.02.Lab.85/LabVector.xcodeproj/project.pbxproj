@@ -3,14 +3,27 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A4204D92793595A00854F9F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A4204D72793595500854F9F /* OpenGL.framework */; platformFilter = maccatalyst; };
+		4A4204DA2793595A00854F9F /* OpenGL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A4204D72793595500854F9F /* OpenGL.framework */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C12A3C1B255ED07100C22728 /* testVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C12A3C1A255ED07100C22728 /* testVector.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4A4204DB2793595A00854F9F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4A4204DA2793595A00854F9F /* OpenGL.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C12A3C04255ECFEA00C22728 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -23,6 +36,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A4204D72793595500854F9F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		C12A3C06255ECFEA00C22728 /* Lab01 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Lab01; sourceTree = BUILT_PRODUCTS_DIR; };
 		C12A3C16255ED05100C22728 /* vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector.h; sourceTree = SOURCE_ROOT; };
 		C12A3C1A255ED07100C22728 /* testVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testVector.cpp; sourceTree = SOURCE_ROOT; };
@@ -35,12 +49,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A4204D92793595A00854F9F /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A4204D62793595500854F9F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4A4204D72793595500854F9F /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C12A3BFD255ECFEA00C22728 = {
 			isa = PBXGroup;
 			children = (
@@ -49,6 +72,7 @@
 				C12A3C1A255ED07100C22728 /* testVector.cpp */,
 				C12A3C16255ED05100C22728 /* vector.h */,
 				C12A3C07255ECFEA00C22728 /* Products */,
+				4A4204D62793595500854F9F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -70,6 +94,7 @@
 				C12A3C02255ECFEA00C22728 /* Sources */,
 				C12A3C03255ECFEA00C22728 /* Frameworks */,
 				C12A3C04255ECFEA00C22728 /* CopyFiles */,
+				4A4204DB2793595A00854F9F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

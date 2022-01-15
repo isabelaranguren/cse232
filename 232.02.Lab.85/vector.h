@@ -254,30 +254,52 @@ vector :: ~vector()
  **************************************/
 void vector :: resize(size_t newElements)
 {
-     if (0 == capacity())
+    if (newElements < numElements)
     {
-        reserve(capacity() +1);
+        for (int i = 0; i < newElements; i++)
+        {
+            data[i - 1] = data[i];
+        }
+        
     }
-    if (size() == capacity())
+    else if (newElements > numElements)
     {
-        reserve(capacity() * 2);
+        if (newElements > numCapacity)
+        {
+            reserve(newElements);
+        }
+        for (int i = 0; i < newElements; i++)
+        {
+            (vector(data[i]));
+        }
+        
     }
-    
-   numElements = newElements;
+    numElements = newElements;
 }
 
 void vector :: resize(size_t newElements, const int & t)
 {
-    if (0 == capacity())
+if (newElements < numElements)
     {
-        reserve(capacity() +1);
+        for (int i = 0; i < newElements; i++)
+        {
+            data[i - 1] = data[i];
+        }
+        
     }
-    if (size() == capacity())
+    else if (newElements > numElements)
     {
-        reserve(capacity() * 2);
+        if (newElements > numCapacity)
+        {
+            reserve(newElements);
+        }
+        for (int i = 0; i < newElements; i++)
+        {
+            (vector(data[i]));
+        }
+        
     }
-    
-   numElements = newElements;
+    numElements = newElements;
 }
 
 /***************************************
@@ -290,16 +312,21 @@ void vector :: resize(size_t newElements, const int & t)
  **************************************/
 void vector :: reserve(size_t newCapacity)
 {
-    if (0 == capacity())
-    {
-        reserve(capacity() +1);
-    }
-    if (size() == capacity())
-    {
-        reserve(capacity() * 2);
-    }
-    
-   numElements = newElements;
+   if (newCapacity <= numCapacity)
+   {
+       return;
+   }
+   else
+   {
+       int* dataNew = new int[newCapacity];
+       for (int i = 0; i < numElements; i++)
+       {
+           dataNew[i] = data[i];
+       }
+       delete [] data;
+       data = dataNew;
+       numCapacity = newCapacity;
+   }
 }
 
 /***************************************
@@ -310,6 +337,21 @@ void vector :: reserve(size_t newCapacity)
  **************************************/
 void vector :: shrink_to_fit()
 {
+    if (numElements == numCapacity)
+    {
+        return;
+    }
+    else
+    {
+        int* dataNew = new int[numElements];
+        for (int i = 0; i < numElements; i++)
+        {
+            dataNew[i] = data[i];
+        }
+        delete [] data;
+        data = dataNew;
+        numCapacity = numElements;
+    }
    
 }
 

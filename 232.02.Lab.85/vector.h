@@ -424,12 +424,29 @@ const int & vector :: back() const
  **************************************/
 void vector :: push_back (const int & t)
 {
+    if (0 == capacity())
+    {
+        reserve(1);
+    }
+    if (size() == capacity())
+    {
+        reserve(capacity() * 2);
+    }
+    data[numElements++] = t;
    
 }
 
 void vector :: push_back(int && t)
 {
-   
+    if (0 == capacity())
+    {
+        reserve(1);
+    }
+    if (size() == capacity())
+    {
+        reserve(capacity() * 2);
+    }
+    data[numElements++] = t;
    
 }
 

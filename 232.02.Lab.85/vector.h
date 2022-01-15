@@ -176,7 +176,9 @@ vector :: vector(const std::initializer_list<int> & l)
    //{
    //    this->data[i] = l;
    //}
-
+   numElements = NULL;
+   numCapacity = NULL;
+    data = new int[numCapacity];
 }
 
 /*****************************************
@@ -279,8 +281,8 @@ void vector :: resize(size_t newElements)
 
 void vector :: resize(size_t newElements, const int & t)
 {
-if (newElements < numElements)
-    {
+   if (newElements < numElements)
+   {
         for (int i = 0; i < newElements; i++)
         {
             data[i - 1] = data[i];
@@ -372,8 +374,7 @@ int & vector :: operator [] (size_t index)
  *****************************************/
 const int & vector :: operator [] (size_t index) const
 {
-    const int value = this->data[index];
-   return value;
+   return this->data[index];;
 }
 
 /*****************************************

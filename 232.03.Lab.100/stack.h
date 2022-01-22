@@ -15,7 +15,10 @@
  *    This will contain the class definition of:
  *       stack             : similar to std::stack
  * Author
- *    <your names here>
+ *    Isabel Aranguren
+ *    Vicente Castillo
+ *    Troy Davidson
+ *
  ************************************************************************/
 
 #pragma once

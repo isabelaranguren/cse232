@@ -80,8 +80,10 @@ public:
    // Insert
    // 
 
-   void push(const T& t) { container.push_back(t); } // Copy push
-   void push(T&& t) { container.push_back(std::move(t)); } // Move push
+   void push(const T& t) {
+       container.push_back(t); } // Copy push
+   void push(T&& t) {
+       container.push_back(std::move(t)); } // Move push
 
    //
    // Remove

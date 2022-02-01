@@ -40,20 +40,22 @@ public:
    //
    // Construct
    //
+    Node()
+       {
+           pNext = nullptr;
+           pPrev = nullptr;
 
-   Node()
-   {
-      pPrev = pNext = this;
-   }
-   Node(const T &  data)
-   {
-      pPrev = pNext = this;
-   }
-   Node(      T && data)
-   {
-      pPrev = pNext = this;
-   }
-
+       }
+       Node(const T &  data)
+       {
+           pNext = nullptr;
+           pPrev = nullptr;
+       }
+       Node(      T && data)
+       {
+           pNext = nullptr;
+           pPrev = nullptr;
+       }
    //
    // Member variables
    //
@@ -75,13 +77,14 @@ template <class T>
 inline Node <T> * copy(const Node <T> * pSource)
 {
     Node <T> *pDestination = new Node<T>(pSource -> data);
-    Node <T> *pDes = pDestination;
+    const Node <T>* pSrc = pSource;
+    Node <T>* pDes = pDestination;
 
-        for (Node <T> *p = pSource->pNext; p; p = p->pNext)
-        {
-             pDes = insert(pDes, p-> data, true);
-        }
-        return pDestination;
+    for (const Node <T> * p = pSrc; p; p = p->pNext)
+       {
+           pDes = insert(pDes , pSrc -> data, true);
+       }
+       return pDes;
     
 }
 
@@ -204,29 +207,36 @@ inline Node <T> * insert(Node <T> * pCurrent,
                          const T & t,
                          bool after = false)
 {
-    Node<T> *pNew = new Node<T>(t);
-    
-    if(pCurrent != NULL && after == false)
-    {
+    // 1. Check if the given prev_node is NULL
 
-        pCurrent = pNew->pNext;
-        pCurrent->pPrev = pNew -> pPrev;
-        pNew = pCurrent -> pPrev;
-        if(pNew->pPrev)
-        {
-            pNew = pNew->pPrev->pNext;
-        }
+    if (pCurrent == NULL && after = false) {
+        
     }
-    if(pCurrent != NULL && after == true)
-    {
-        pCurrent = pNew->pNext;
-        pCurrent->pPrev = pNew->pPrev;
-        pNew = pCurrent->pPrev;
-        if(pNew->pPrev)
-        {
-            pNew = pNew->pPrev->pNext;;
-        }
-    }
+    
+    
+//    Node<T> *pNew = new Node<T>(t);
+//
+//    if(pCurrent != NULL && after == false)
+//    {
+//
+//        pCurrent = pNew->pNext;
+//        pCurrent->pPrev = pNew -> pPrev;
+//        pNew = pCurrent -> pPrev;
+//        if(pNew->pPrev)
+//        {
+//            pNew = pNew->pPrev->pNext;
+//        }
+//    }
+//    if(pCurrent != NULL && after == true)
+//    {
+//        pCurrent = pNew->pNext;
+//        pCurrent->pPrev = pNew->pPrev;
+//        pNew = pCurrent->pPrev;
+//        if(pNew->pPrev)
+//        {
+//            pNew = pNew->pPrev->pNext;;
+//        }
+//    }
     
    return pNew;
 }

@@ -15,9 +15,6 @@
  *        Node         : A class representing a Node
  *    Additionally, it will contain a few functions working on Node
  * Author
- *    Isabel Aranguren
- *    Vicente Castillo
- *    Troy Davidson
  ************************************************************************/
 
 #pragma once
@@ -40,22 +37,28 @@ public:
    //
    // Construct
    //
-    Node()
-       {
-           pNext = nullptr;
-           pPrev = nullptr;
 
-       }
-       Node(const T &  data)
-       {
-           pNext = nullptr;
-           pPrev = nullptr;
-       }
-       Node(      T && data)
-       {
-           pNext = nullptr;
-           pPrev = nullptr;
-       }
+   Node()
+   {
+       this->data = data;
+       pNext = nullptr;
+       pPrev = nullptr;
+       
+
+   }
+   Node(const T &  data)
+   {
+       this->data = data;
+       pNext = nullptr;
+       pPrev = nullptr;
+   }
+    Node(      T && data)
+    {
+        this->data = data;
+        pNext = nullptr;
+        pPrev = nullptr;
+    }
+
    //
    // Member variables
    //
@@ -72,21 +75,20 @@ public:
  *   OUTPUT : return the new list
  *   COST   : O(n)
  **********************************************/
-
 template <class T>
 inline Node <T> * copy(const Node <T> * pSource)
 {
     Node <T> *pDestination = new Node<T>(pSource -> data);
-    const Node <T>* pSrc = pSource;
-    Node <T>* pDes = pDestination;
+    Node <T> *pDes = pDestination;
 
-    for (const Node <T> * p = pSrc; p; p = p->pNext)
-       {
-           pDes = insert(pDes , pSrc -> data, true);
-       }
-       return pDes;
+        for (Node <T> *p = pSource->pNext; p; p = p->pNext)
+        {
+             pDes = insert(pDes, p-> data, true);
+        }
+        return pDestination;
     
 }
+
 
 
 /***********************************************
@@ -133,7 +135,7 @@ inline void assign(Node <T> * & pDestination, const Node <T> * pSource)
           }
       }
    }
-   
+
 /***********************************************
  * SWAP
  * Swap the list from LHS to RHS
@@ -153,6 +155,7 @@ inline void swap(Node <T>* &pLHS, Node <T>* &pRHS){
     pRHS->pPrev = temp->pPrev;
     pRHS->pNext = temp->pNext;
 }
+
 /***********************************************
  * REMOVE
  * Remove the node pSource in the linked list
@@ -209,10 +212,10 @@ inline Node <T> * insert(Node <T> * pCurrent,
 {
     // 1. Check if the given prev_node is NULL
 
-    if (pCurrent == NULL && after = false) {
-        
-    }
-    
+//    if (pCurrent == NULL && after = false) {
+//
+//    }
+//
     
 //    Node<T> *pNew = new Node<T>(t);
 //
@@ -238,7 +241,7 @@ inline Node <T> * insert(Node <T> * pCurrent,
 //        }
 //    }
     
-   return pNew;
+ //  return pNew;
 }
 
 

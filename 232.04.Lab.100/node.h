@@ -15,9 +15,7 @@
  *        Node         : A class representing a Node
  *    Additionally, it will contain a few functions working on Node
  * Author
- *    Isabel Aranguren
- *    Vicente Castillo
- *    Troy Davidson
+ *    Adrian, Isabel, Troy
  ************************************************************************/
 
 #pragma once
@@ -76,21 +74,20 @@ template <class T>
 inline Node <T> * copy(const Node <T> * pSource)
 {
     if (pSource)
-    {
-        Node <T>* pDestination = new Node<T>(pSource->data);
-        const Node <T>* pSrc = pSource;
-        Node <T>* pDes = pDestination;
+       {
+           Node <T>* pDestination = new Node<T>(pSource->data);
+           Node <T>* pDes = pDestination;
 
-        for (; pSrc; pSrc = pSrc->pNext)
-        {
-            pDes = insert(pDes, pSrc->data, true);
-        }
-        return pDestination;
-    }
-    else
-    {
-        return NULL;
-    }
+           for (const Node <T>* pSrc = pSource; pSrc->pNext != nullptr; pSrc = pSrc->pNext)
+           {
+               pDes = insert(pDes, pSrc->data, true);
+           }
+           return pDestination;
+       }
+       else
+       {
+           return NULL;
+       }
 }
 
 /***********************************************
@@ -105,48 +102,64 @@ template <class T>
 inline void assign(Node <T> * & pDestination, const Node <T> * pSource)
 {
     const Node <T>* pSrc = pSource;
-    Node <T>* pDes = pDestination;
-    while (pSrc != NULL && pDes != NULL)
-    {
-        pDes->data = pSrc->data;
-        pDes = pDes->pNext;
-        pSrc = pSrc->pNext;
-    }
+       Node <T>* pDes = pDestination;
+       Node <T>* pDesPrevious = nullptr;
 
-    if (pSrc != NULL)
-    {
-        while (pSrc != NULL)
-        {
-            pDes = insert(pDes, pSrc->data, true);
-            if (pDestination == NULL)
-            {
-                pDestination = pDes;
-            }
-            pSrc = pSrc->pNext;
-        }
-    }
+       while (pSrc != nullptr && pDes != nullptr)
+       {
+           //Run while both lists have nodes in this position, then exit loop when at least one of the nodes is null
+           pDes->data = pSrc->data;
+           pDesPrevious = pDes;
+           pDes = pDes->pNext;
+           pSrc = pSrc->pNext;
+       }
 
+       if (pSrc != nullptr)
+       {
+           //This only runs if the source list was longer than the destination list
+           pDes = pDesPrevious;
+           while (pSrc != nullptr)
+           {
+               pDes = insert(pDes, pSrc->data, true);
+               if (pDestination == nullptr)
+               {
+                   //This only runs if the original destination node was null, and can only run once.
+                   pDestination = pDes;
+               }
+               pSrc = pSrc->pNext;
+           }
+       }
+       else if (pDes != nullptr && pSrc == nullptr)
+       {
+           //This only runs if the destination list was longer than the source list.
+           
+           //Remove all remaining child nodes from destination list.
+           while (pDes->pNext)
+           {
+               pDes = remove(pDes->pNext);
+           }
 
-    if (pSource != NULL && pDestination != NULL)
-    {
-        bool setToNull = false;
-        if (pDes->pPrev != NULL)
-        {
-            pDes->pPrev->pNext = NULL;
+           if (pSrc == nullptr && pDes != nullptr)
+           {
+               bool setToNull = false;
+               if (pDes->pPrev != nullptr)
+               {
+                   pDes->pPrev->pNext = nullptr;
+               }
+               else
+               {
+                   setToNull = true;
+               }
+               delete pDes;
 
-        }
-        else
-        {
-            setToNull = true;
-        }
-        delete pDes;
-
-        if (setToNull)
-        {
-            pDestination = NULL;
-        }
-    }
+               if (setToNull)
+               {
+                   pDestination = nullptr;
+               }
+           }
+       }
 }
+
 
 /***********************************************
  * SWAP
@@ -172,7 +185,8 @@ inline void swap(Node <T>* &pLHS, Node <T>* &pRHS)
 template <class T>
 inline Node <T> * remove(const Node <T> * pRemove)
 {
-    if (pRemove == nullptr)
+    Node<T>* pReturn;
+    if (pRemove == NULL)
     {
         return NULL;
     }
@@ -185,8 +199,6 @@ inline Node <T> * remove(const Node <T> * pRemove)
     {
         pRemove->pNext->pPrev = pRemove->pPrev;
     }
-
-    Node<T>* pReturn;
     if (pRemove->pPrev)
     {
         pReturn = pRemove->pPrev;
@@ -216,7 +228,6 @@ inline Node <T> * insert(Node <T> * pCurrent,
                   bool after = false)
 {
     Node <T> * pNew = new Node<T>(t);
-
     if(pCurrent != NULL && after == false)
     {
         pNew->pNext = pCurrent;
@@ -229,15 +240,14 @@ inline Node <T> * insert(Node <T> * pCurrent,
     }
     if(pCurrent != NULL && after == true)
     {
-        pNew->pPrev = pCurrent;
         pNew->pNext = pCurrent->pNext;
+        pNew->pPrev = pCurrent;
         pCurrent->pNext = pNew;
-        if (pNew->pNext)
+        if(pNew->pNext)
         {
             pNew->pNext->pPrev = pNew;
         }
     }
-
    return pNew;
 }
 
@@ -253,14 +263,12 @@ inline Node <T> * insert(Node <T> * pCurrent,
 template <class T>
 inline size_t size(const Node <T> * pHead)
 {
-    if (pHead == NULL)
+    int s = 0;
+    for (const Node <T> *p = pHead; p; p = p->pNext)
     {
-        return 0;
+        s = s + 1;
     }
-    else
-    {
-        return 1 + size(pHead->pNext);
-    }
+    return s;
 }
 
 /***********************************************
@@ -297,6 +305,5 @@ inline void clear(Node <T> * & pHead)
         delete pDelete;
     }
 }
-
 
 
